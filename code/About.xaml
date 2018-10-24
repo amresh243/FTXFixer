@@ -1,0 +1,132 @@
+﻿<!--***********************************************************************
+ * 
+ * CENGAGE CONFIDENTIAL
+ * ____________________
+ * 
+ *  [2017] Cengage Learning 
+ *  All Rights Reserved.
+ * 
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Cengage Learning. The intellectual and technical 
+ * concepts contained herein are proprietary to Cengage Learning
+ * and may be covered by U.S. and Foreign Patents, patents in process, 
+ * and are protected by trade secret or copyright law. Dissemination 
+ * of this information or reproduction of this material is strictly
+ * forbidden unless prior written permission is obtained from 
+ * Cengage Learning. (Author - Amresh Kumar)
+ *
+ * About.xaml - About UI design.
+ *
+ -->
+
+
+<Window x:Class="FTXFixer.code.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FTXFixer.code"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        KeyDown="OnEscapeOrEnter"
+        SizeToContent="Height"
+        ShowInTaskbar="False"
+        Title="About FTXFixer..." 
+        Height="170" Width="310">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Border Name="appborder" 
+          BorderThickness="3"
+          BorderBrush="{StaticResource ControlEnabled}">
+    <DockPanel>
+      <Border DockPanel.Dock="Top" 
+              BorderThickness="1" 
+              BorderBrush="black" 
+              Padding="6" 
+              Background="{StaticResource ControlEnabled}"
+              Margin="0 0 0 0">
+        <TextBlock Name="headerblock" 
+                   Foreground="Black" 
+                   FontWeight="Medium"
+                   FontSize="16"
+                   Text="About FTXFixer..." />
+      </Border>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="5"
+               FontSize="10"
+               Padding="5, 0, 0, 5"
+               Foreground="#777"
+               Content="{Binding Path=Copyright}"
+               Grid.ColumnSpan="4" />
+        <Label Grid.Column="2"
+               Grid.RowSpan="2"
+               Grid.ColumnSpan="3"
+               FontWeight="Medium"
+               Foreground="#777"
+               Content="FTXFixer.exe"
+               FontSize="30" />
+        <Label Grid.Row="2"
+               Grid.Column="2"
+               FontSize="13"
+               Padding="5, 5, 0, 0"
+               Content="Version"
+               FontWeight="Medium" />
+        <Label Grid.Row="2"
+               Grid.Column="3"
+               Grid.ColumnSpan="2"
+               FontSize="13"
+               Padding="5, 5, 0, 0"
+               Content="{Binding Path=BuildVersion}" />
+        <Label Grid.Row="3"
+               Grid.Column="2"
+               FontSize="13"
+               Padding="5, 0, 0, 0"
+               Content="Built On"
+               FontWeight="Medium" />
+        <Label Grid.Row="3"
+               Grid.Column="3"
+               Grid.ColumnSpan="2"
+               FontSize="13"
+               Padding="5, 0, 0, 0"
+               Content="{Binding Path=BuildDate}" />
+        <Image Source="{Binding Path=AppImage}"
+               Grid.RowSpan="5"
+               Grid.ColumnSpan="2"
+               Margin="5, 15, 10, 5"
+               Name="imgApp" />
+        <Button Grid.Row="4"
+                Grid.RowSpan="2"
+                Grid.Column="4"
+                FontSize="14"
+                Click="OnAboutOK"
+                Background="{StaticResource ControlEnabled}"
+                Style="{DynamicResource RoundedButton}"
+                FontWeight="Medium"
+                Content="OK"
+                Margin="5, 10, 5, 5" />
+      </Grid>
+    </DockPanel>
+  </Border>
+</Window>

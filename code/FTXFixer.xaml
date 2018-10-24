@@ -1,0 +1,420 @@
+﻿<!--***********************************************************************
+ * 
+ * CENGAGE CONFIDENTIAL
+ * ____________________
+ * 
+ *  [2017] Cengage Learning 
+ *  All Rights Reserved.
+ * 
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Cengage Learning. The intellectual and technical 
+ * concepts contained herein are proprietary to Cengage Learning
+ * and may be covered by U.S. and Foreign Patents, patents in process, 
+ * and are protected by trade secret or copyright law. Dissemination 
+ * of this information or reproduction of this material is strictly
+ * forbidden unless prior written permission is obtained from 
+ * Cengage Learning. (Author - Amresh Kumar)
+ *
+ * FTXFixer.xaml - Main window UI design. 
+ *
+ -->
+
+
+<Window x:Class="FTXFixer.FTXFixerWnd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FTXFixer"
+        mc:Ignorable="d"
+        Loaded="OnLoaded"
+        Closing="OnClosing"
+        Closed="OnClosed"
+        KeyDown="OnFNKeyPress"
+        SizeChanged="OnResize"
+        MouseRightButtonDown="OnShowMenu"
+        Title="FTX Fixer" 
+        Height="440" Width="620"
+        MinHeight="175" MinWidth="620">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Border Name="appborder" 
+          BorderThickness="3"
+          BorderBrush="{StaticResource ControlEnabled}">
+    <DockPanel>
+      <Border Name="headerborder" 
+              DockPanel.Dock="Top" 
+              BorderThickness="1"
+              BorderBrush="Black"
+              Background="{StaticResource ControlEnabled}"
+              Margin="0 0 0 5">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Name="headerblock" 
+                     Grid.Column="1"
+                     Padding="5, 8, 8, 8" 
+                     FontSize="16" 
+                     FontWeight="Medium">
+            FTXFixer: Removes specified listed patterns from fulltext files
+          </TextBlock>
+          <Button Name="btnMenu"
+                  Background="Transparent"
+                  BorderBrush="Gray"
+                  Click="OnShowMenu"
+                  Margin="5, 0, 0, 0"
+                  Height="20"
+                  Width="30">
+            <Image HorizontalAlignment="Center" 
+                   Source="/FTXFixer;component/res/menu.png" />
+            <Button.ContextMenu>
+              <ContextMenu Name="AppMenu">
+                <MenuItem Header="Log and Pattern Settings" 
+                          Name="miLPS"
+                          Click="OnAddPattern"
+                          Icon="{StaticResource patsettings}"
+                          InputGestureText="F2" />
+                <MenuItem Header="Open Settings INI" 
+                          Name="miOS"
+                          Click="OpenSettingsINI"
+                          Icon="{StaticResource inisettings}"
+                          InputGestureText="F3" />
+                <MenuItem Header="Reload Settings INI" 
+                          Name="miRS" 
+                          Click="ReloadSettingsINI"
+                          Icon="{StaticResource inireload}"
+                          InputGestureText="F4" />
+                <Separator />
+                <MenuItem Header="Start Processing"
+                          Name="miSP"
+                          Foreground="OliveDrab"
+                          FontWeight="Medium"
+                          Click="OnProcess"
+                          InputGestureText="F5" />
+                <Separator />
+                <MenuItem Header="Open Input Location" 
+                          Name="miOIL"
+                          Click="OpenLocation"
+                          Icon="{StaticResource folder}"
+                          InputGestureText="F6" />
+                <MenuItem Header="Open Output Location" 
+                          Name="miOOL" 
+                          Click="OpenLocation"
+                          Icon="{StaticResource folder}"
+                          InputGestureText="F7" />
+                <MenuItem Header="Open Log Location" 
+                          Name="miOLL" 
+                          Click="OpenLocation"
+                          Icon="{StaticResource folder}"
+                          InputGestureText="F8" />
+                <Separator />
+                <MenuItem Header="Open Application Log"
+                          Name="miAPPL"
+                          Click="OpenLogFile" />
+                <MenuItem Header="Open Article Log"
+                          Name="miARTL"
+                          Click="OpenLogFile" />
+                <Separator/>
+                <MenuItem Header="Help" 
+                          Name="miOH" 
+                          Click="ShowManual"
+                          FontWeight="Medium"
+                          Icon="{StaticResource help}"
+                          InputGestureText="F1" />
+                <MenuItem Header="About FTXFixer" 
+                          Name="miOA" 
+                          Click="ShowAbout"
+                          FontWeight="Medium"
+                          Icon="{StaticResource appicon}"
+                          InputGestureText="F9" />
+              </ContextMenu>
+            </Button.ContextMenu>
+          </Button>
+        </Grid>
+      </Border>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Name="r1"/>
+          <RowDefinition Name="r2"/>
+          <RowDefinition Name="r3" />
+          <RowDefinition Name="r4"/>
+          <RowDefinition Name="r5"/>
+          <RowDefinition Name="r6"/>
+          <RowDefinition Name="r7"/>
+          <RowDefinition Name="r8"/>
+          <RowDefinition Name="r9"/>
+          <RowDefinition Name="r10"/>
+          <RowDefinition Name="r11"/>
+          <RowDefinition Name="r12"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Expander Grid.ColumnSpan="8" 
+                  Grid.RowSpan="5" 
+                  Margin="5, 0, 5, 0"
+                  Name="gbInput" 
+                  IsTabStop="False"
+                  BorderBrush="DeepSkyBlue"
+                  Header="Input &amp; Output Settings" 
+                  IsExpanded="True" 
+                  MinHeight="24"
+                  FontWeight="DemiBold"
+                  Collapsed="OnCollapsed" 
+                  Expanded="OnExpanded" 
+                  FontSize="14">
+          <Grid Name="gbInp">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.ColumnSpan="2" 
+                   Content="Input Location" 
+                   VerticalAlignment="Center">
+            </Label>
+            <TextBox Text="{Binding Path=InputPath}"
+                     Grid.ColumnSpan="6" 
+                     Grid.Column="2" 
+                     FontWeight="Normal"
+                     Name="txtInput" 
+                     IsReadOnly="True"
+                     Foreground="Gray"
+                     VerticalContentAlignment="Center" 
+                     Margin="0, 5, 0, 0" />
+            <Button Grid.Column="8" 
+                    Style="{DynamicResource RoundedButton}"
+                    Background="{StaticResource ControlEnabled}"
+                    Name="btnInput" 
+                    Click="OnSetInput" 
+                    Content="SET" 
+                    TabIndex="1"
+                    Margin="5, 5, 5, 0" />
+            <Label Grid.ColumnSpan="2" 
+                   Grid.Row="1" 
+                   Content="Output Location" 
+                   VerticalAlignment="Center" />
+            <TextBox Text="{Binding Path=OutputPath}"
+                     Grid.ColumnSpan="6" 
+                     Grid.Row="1" 
+                     Grid.Column="2" 
+                     FontWeight="Normal"
+                     Name="txtOutput" 
+                     Foreground="Gray"
+                     VerticalContentAlignment="Center" 
+                     IsReadOnly="True"
+                     Margin="0, 5, 0, 0" />
+            <Button Grid.Column="8" 
+                    Grid.Row="1" 
+                    Style="{DynamicResource RoundedButton}"
+                    Background="{StaticResource ControlEnabled}"
+                    Name="btnOutput" 
+                    Click="OnSetOutput" 
+                    Content="SET" 
+                    TabIndex="2"
+                    Margin="5, 5, 5, 0" />
+            <Label Grid.ColumnSpan="2" 
+                   Grid.Row="2" 
+                   Margin="0, 0, 0, 5"
+                   Content="Select Language" 
+                   VerticalAlignment="Center" />
+            <ComboBox Grid.Row="2"
+                      Grid.Column="2"
+                      Grid.ColumnSpan="2"
+                      SelectedIndex="0"
+                      Style="{DynamicResource MyCombo}"
+                      FontWeight="Normal"
+                      IsEnabled="false"
+                      Name="cmbLanguage"
+                      DropDownClosed="OnFooterLanguageChange"
+                      VerticalAlignment="Center"
+                      Margin="0, 5, 0, 5">
+              <ComboBoxItem>English-G297</ComboBoxItem>
+              <ComboBoxItem>Spanish-G298</ComboBoxItem>
+              <ComboBoxItem>French-G299</ComboBoxItem>
+              <ComboBoxItem>English-G300</ComboBoxItem>
+            </ComboBox>
+            <CheckBox Name="cbFooter"
+                      TabIndex="3"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="3"
+                      Grid.Column="4"
+                      Style="{DynamicResource SliderCheckBox}"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Margin="5, 5, 5, 0"
+                      Content="Add Footer"
+                      Checked="OnFooterSelection"
+                      Unchecked="OnFooterSelection" />
+            <CheckBox IsChecked="{Binding Path=CleanOutput}"
+                      Name="cbClean"
+                      TabIndex="4"
+                      Grid.ColumnSpan="3"
+                      Grid.Row="3"
+                      Grid.Column="6"
+                      Style="{DynamicResource SliderCheckBox}"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Margin="5, 5, 5, 0"
+                      Content="Clean Existing Outputs"
+                      Checked="OnCleanOutput"
+                      Unchecked="OnCleanOutput" />
+          </Grid>
+        </Expander>
+        <Expander Grid.ColumnSpan="8" 
+                  Grid.RowSpan="5" 
+                  Grid.Row="5" 
+                  IsTabStop="False"
+                  FontWeight="DemiBold"
+                  Header="Pattern List &amp; Settings" 
+                  IsExpanded="True" 
+                  Collapsed="OnCollapsed" 
+                  Expanded="OnExpanded" 
+                  BorderBrush="DeepSkyBlue"
+                  Name="gbPatterns" 
+                  MinHeight="24"
+                  Margin="5, 5, 5, 5"
+                  FontSize="14">
+          <Grid Name="gbPatternGrid">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListBox ItemsSource="{Binding Path=Patterns, Mode=TwoWay}"
+                     Name="lbPatterns" 
+                     IsTabStop="False"
+                     FontWeight="DemiBold"
+                     Grid.RowSpan="4" 
+                     Grid.ColumnSpan="6" 
+                     Margin="5, 5, 0, 5">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <WrapPanel>
+                    <TextBlock Text="{Binding ID, Mode=TwoWay}" 
+                               FontFamily="Courier New"
+                               Foreground="DeepSkyBlue" />
+                    <TextBlock Text="." 
+                               FontFamily="Courier New"
+                               Foreground="DeepSkyBlue" />
+                    <TextBlock Text="{Binding Name}" 
+                               FontWeight="Regular"
+                               FontFamily="Courier"
+                               Foreground="{Binding Color}" />
+                  </WrapPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="3"
+                    Grid.Column="5"
+                    Name="btnUndo"
+                    Margin="5, 0, 0, 5"
+                    Style="{DynamicResource RoundedButton}"
+                    Background="LimeGreen"
+                    Visibility="Hidden"
+                    Content="⎌Undo"
+                    Click="OnUndo" />
+            <Button Grid.ColumnSpan="2" 
+                    Grid.RowSpan="2" 
+                    TabIndex="5"
+                    Style="{DynamicResource RoundedButton}"
+                    Background="{StaticResource ControlEnabled}"
+                    Grid.Column="6" 
+                    Name="btnAddPattern" 
+                    Click="OnAddPattern" 
+                    Margin="5, 5, 0, 2">
+              <TextBlock>Add Pattern &amp;<LineBreak />Log Settings</TextBlock>
+            </Button>
+            <Button Grid.ColumnSpan="2" 
+                    Grid.RowSpan="2" 
+                    Grid.Column="6" 
+                    Grid.Row="2" 
+                    Style="{DynamicResource RoundedButton}"
+                    Background="{StaticResource ControlEnabled}"
+                    TabIndex="6"
+                    Name="btnRemovePattern" 
+                    Click="OnRemovePattern" 
+                    Margin="5, 3, 0, 5">
+              <TextBlock>Remove<LineBreak />Pattern</TextBlock>
+            </Button>
+            <Button x:FieldModifier="public"
+                    TabIndex="0"
+                    Grid.ColumnSpan="2" 
+                    Grid.RowSpan="4" 
+                    Grid.Column="8" 
+                    Name="btnProcess" 
+                    Click="OnProcess" 
+                    FontWeight="Bold"
+                    FontSize="16"
+                    Style="{DynamicResource RoundedButton}"
+                    Background="OliveDrab"
+                    Margin="5, 5, 5, 5">
+              <TextBlock>Start<LineBreak/>Processing</TextBlock>
+            </Button>
+          </Grid>
+        </Expander>
+        <ProgressBar Value="{Binding Path=ProgressValue, Mode=TwoWay}"
+                     Name="processProgress"
+                     Grid.Row="10"
+                     Style="{StaticResource ProgressBarStyle}"
+                     Grid.ColumnSpan="8" />
+        <TextBlock Text="{Binding Path=ProgressText, Mode=TwoWay}"
+                   Name="progressValue"
+                   Grid.Row="10"
+                   Grid.ColumnSpan="8"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold" />
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="11" 
+                    Grid.ColumnSpan="8" 
+                    Background="{StaticResource ControlEnabled}"
+                    DockPanel.Dock="Bottom" 
+                    Name="statusStrip">
+          <Label Name="tssActivity" 
+                 VerticalAlignment="Center" 
+                 FontWeight="Medium"
+                 Height="Auto" />
+        </StackPanel>
+      </Grid>
+    </DockPanel>
+  </Border>
+</Window>
